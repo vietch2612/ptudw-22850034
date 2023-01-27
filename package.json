@@ -1,0 +1,24 @@
+{
+  "name": "ptudw-22850034",
+  "version": "1.0.0",
+  "description": "Learning expressjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vietch2612/web-application.git"
+  },
+  "author": "Viet Cao",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vietch2612/web-application/issues"
+  },
+  "homepage": "https://github.com/vietch2612/web-application#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.7",
+    "nodemon": "^2.0.20"
+  }
+}
