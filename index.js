@@ -17,9 +17,17 @@ app.use((_request, response, next) => {
 	next();
 });
 
-// Route
+// Modules
 const hbs = require('express-handlebars');
+const bodyParser = require('body-parser');
 const productsRouter = require('./routes/products');
+const models = require('./models');
+
+app.get('/sync', (_resquest, response) => {
+	models.sequelize.sync().then(() => {
+		response.send('Database sync completed');
+	});
+});
 
 app.use('/products', productsRouter);
 
@@ -44,6 +52,10 @@ app.engine('hbs', hbs.engine({
 }));
 
 app.set('view engine', 'hbs');
+
+// Body parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/test', (_request, res) => {
 	res.render('index');
