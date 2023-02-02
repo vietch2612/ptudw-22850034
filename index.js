@@ -20,8 +20,11 @@ app.use((_request, response, next) => {
 // Modules
 const hbs = require('express-handlebars');
 const bodyParser = require('body-parser');
+const sequelize = require('sequelize');
 const productsRouter = require('./routes/products');
 const models = require('./models');
+
+const op = sequelize.Op;
 
 app.get('/sync', (_resquest, response) => {
 	models.sequelize.sync().then(() => {
@@ -90,7 +93,81 @@ app.get('/test', (_request, res) => {
 // 	res.send(request.params);
 // });
 
-// error handling
+// CREATE
+// Insert into
+app.get('/create', (request, response) => {
+	models.Product
+		.create({
+			name: 'Product 1',
+			description: 'Des ',
+			price: Math.random() * 100,
+		})
+		.then(product => {
+			response.json(product);
+		})
+		.catch(error => {
+			response.json(error);
+		});
+});
+
+// Insert an array
+app.get('/createMany', (request, response) => {
+	models.Product
+		.bulkCreate([
+			{
+				name: 'Product 1',
+				description: 'Des ',
+				price: Math.random() * 100,
+			}, {
+				name: 'Product 1',
+				description: 'Des ',
+				price: Math.random() * 100,
+			},
+		])
+		.then(products => {
+			response.json(products);
+		})
+		.catch(error => {
+			response.json(error);
+		});
+});
+
+// GetAlls
+app.get('/products', (request, response) => {
+	const page = request.query.page || 1;
+	models.Product
+		.findAll({
+			limit: 5,
+			offset: (page - 1) * 5,
+			where: {
+				name: {[op.iLike]: '%pro%'},
+			},
+			include: [models.Comment],
+		})
+		.then(products => {
+			response.json(products);
+		})
+		.catch(error => {
+			response.json(error);
+		});
+});
+
+app.get('/products/:id/comments', (request, response) => {
+	const product_id = request.params.id;
+	models.Product
+		.findOne({
+			where: {id: product_id},
+			include: [models.Comment],
+		})
+		.then(product => {
+			response.json(product);
+		})
+		.catch(error => {
+			response.json(error);
+		});
+});
+
+// Error handling
 // 404
 app.use((_request, response) => {
 	response.status(404).send('Error: Request not found!');

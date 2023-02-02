@@ -1,8 +1,8 @@
 'use strict';
 
-const faker = require('faker');
+// Const faker = require('faker');
 
-const randomProduct = faker.commerce.productName();
+// const randomProduct = faker.commerce.productName();
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
      * Example:
    */
 		await queryInterface.bulkInsert('Products', [{
-			name: randomProduct,
+			name: '1231231',
 			summary: 'Summary 1',
 			description: 'Description 1',
 			price: 9.99,
